@@ -53,68 +53,72 @@ export default function LoginForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            <div className="grid grid-cols-2 gap-4">
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              sign_Up(data);
+            }}
+          >
+            <div className="grid gap-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="first_name">First name</Label>
+                  <Input
+                    id="first_name"
+                    placeholder="Max"
+                    required
+                    name="first_name"
+                    onChange={(e) =>
+                      setData((o) => ({ ...o, first_name: e.target.value }))
+                    }
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="last_name">Last name</Label>
+                  <Input
+                    id="last_name"
+                    placeholder="Robinson"
+                    required
+                    name="last_name"
+                    onChange={(e) =>
+                      setData((o) => ({ ...o, last_name: e.target.value }))
+                    }
+                  />
+                </div>
+              </div>
               <div className="grid gap-2">
-                <Label htmlFor="first_name">First name</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
-                  id="first_name"
-                  placeholder="Max"
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
                   required
-                  name="first_name"
+                  name="email"
                   onChange={(e) =>
-                    setData((o) => ({ ...o, first_name: e.target.value }))
+                    setData((o) => ({ ...o, email: e.target.value }))
                   }
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="last_name">Last name</Label>
+                <Label htmlFor="password">Password</Label>
                 <Input
-                  id="last_name"
-                  placeholder="Robinson"
+                  id="password"
+                  type="password"
+                  name="password"
                   required
-                  name="last_name"
                   onChange={(e) =>
-                    setData((o) => ({ ...o, last_name: e.target.value }))
+                    setData((o) => ({ ...o, password: e.target.value }))
                   }
                 />
               </div>
+              <Button type="submit" className="w-full">
+                Create an account
+              </Button>
+              <Button variant="outline" className="w-full">
+                Sign up with GitHub
+              </Button>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-                name="email"
-                onChange={(e) =>
-                  setData((o) => ({ ...o, email: e.target.value }))
-                }
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                name="password"
-                onChange={(e) =>
-                  setData((o) => ({ ...o, password: e.target.value }))
-                }
-              />
-            </div>
-            <Button
-              type="submit"
-              className="w-full"
-              onClick={() => sign_Up(data)}
-            >
-              Create an account
-            </Button>
-            <Button variant="outline" className="w-full">
-              Sign up with GitHub
-            </Button>
-          </div>
+          </form>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
             <Link href="signin" className="underline">

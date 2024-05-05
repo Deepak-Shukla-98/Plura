@@ -11,7 +11,7 @@ const Loader = ({ display = "none" }) => {
         zIndex: 999999,
         display: display,
         placeContent: "center",
-        cursor: "none",
+        // cursor: "none",
       }}
       id="spinner"
     >
