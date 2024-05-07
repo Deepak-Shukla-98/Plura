@@ -5,8 +5,7 @@ export const useSharedContext = () => useContext(SharedContext);
 
 const initialState = {
   user: {},
-  isAuthenticated:
-    typeof window !== "undefined" ? !!localStorage.getItem("token") : false,
+  isAuthenticated: false,
 };
 const SharedReducer = (state, action) => {
   switch (action.type) {

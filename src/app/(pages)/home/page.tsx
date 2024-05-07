@@ -73,8 +73,9 @@ import {
 } from "@/components/ui/tooltip";
 import { useRouter } from "next/navigation";
 import { useSharedContext } from "@/components/context/sharedContext";
+import isAuth from "@/components/utils/auth";
 
-export default function Dashboard() {
+function Dashboard() {
   const router = useRouter();
   const { dispatch } = useSharedContext();
   const Logout = () => {
@@ -719,3 +720,4 @@ export default function Dashboard() {
     </div>
   );
 }
+export default isAuth(Dashboard);
