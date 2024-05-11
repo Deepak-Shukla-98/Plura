@@ -7,8 +7,8 @@ import { useSharedContext } from "@/components/context/sharedContext";
 import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/components/services/axios";
-import { useState } from "react";
-import { Spinner } from "@nextui-org/spinner";
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 
 const metadata: Metadata = {
   title: "Sign In",
@@ -20,6 +20,7 @@ interface data {
   password: String;
 }
 export default function SignIn() {
+  const { setTheme } = useTheme();
   const router = useRouter();
   const { dispatch } = useSharedContext();
   const [data, setData] = useState<data>({
@@ -42,11 +43,14 @@ export default function SignIn() {
       router.push("/home");
     }
   };
+  useEffect(() => {
+    setTheme("light");
+  }, []);
   return (
     <div className="h-screen w-full lg:grid lg:min-h-[600px] lg:grid-cols-2">
       <div className="hidden bg-muted lg:block">
         <img
-          src="https://picsum.photos/1800/900/"
+          src="https://picsum.photos/id/19/1800/900/"
           alt="Image"
           className="h-screen w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />

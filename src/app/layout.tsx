@@ -9,6 +9,7 @@ import Loader from "@/components/uicomponents/spinner";
 import { NextUIProvider } from "@nextui-org/react";
 import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from "@/components/utils/themeProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,11 +21,7 @@ const metadata: Metadata = {
   description: "Created by Plura",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -38,10 +35,17 @@ export default function RootLayout({
         <NextUIProvider>
           <TooltipProvider>
             <SharedContextProvider>
-              <Suspense fallback={<Loader display={"grid"} />}>
-                {children}
-                <Toaster position="top-right" />
-              </Suspense>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Suspense fallback={<Loader display={"grid"} />}>
+                  {children}
+                  <Toaster position="top-right" />
+                </Suspense>
+              </ThemeProvider>
             </SharedContextProvider>
           </TooltipProvider>
         </NextUIProvider>
@@ -49,3 +53,4 @@ export default function RootLayout({
     </html>
   );
 }
+export default RootLayout;
