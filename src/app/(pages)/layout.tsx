@@ -6,6 +6,7 @@ import Header from "./@header/page";
 import { Sidebar } from "./@sidebar/page";
 import { Suspense } from "react";
 import Loader from "@/components/uicomponents/spinner";
+import Breadcrumb from "@/components/uicomponents/breadcurmb";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -32,7 +33,12 @@ function HomeLayout({
       <div className="flex flex-col">
         <Header />
         <Suspense fallback={<Loader display={"grid"} />}>
-          <div className="p-4">{children}</div>
+          <div style={{ maxHeight: "90vh", overflowY: "scroll" }}>
+            <div className="m-3 text-sm">
+              <Breadcrumb />
+            </div>
+            <div className="p-2">{children}</div>
+          </div>
         </Suspense>
       </div>
     </div>

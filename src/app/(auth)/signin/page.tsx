@@ -7,6 +7,7 @@ import { useSharedContext } from "@/components/context/sharedContext";
 import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/components/services/axios";
+import { RiEyeCloseFill, RiEyeOffLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 
@@ -23,6 +24,7 @@ export default function SignIn() {
   const { setTheme } = useTheme();
   const router = useRouter();
   const { dispatch } = useSharedContext();
+  const [view, setView] = useState(false);
   const [data, setData] = useState<data>({
     email: "",
     password: "",
@@ -92,14 +94,37 @@ export default function SignIn() {
                     Forgot your password?
                   </Link>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  onChange={(e) =>
-                    setData((o) => ({ ...o, password: e.target.value }))
-                  }
-                />
+                <div style={{ position: "relative" }}>
+                  <Input
+                    id="password"
+                    type={view ? "text" : "password"}
+                    required
+                    onChange={(e) =>
+                      setData((o) => ({ ...o, password: e.target.value }))
+                    }
+                  />
+                  {view ? (
+                    <RiEyeOffLine
+                      onClick={() => setView(!view)}
+                      style={{
+                        position: "absolute",
+                        right: "12px",
+                        top: "35%",
+                        cursor: "pointer",
+                      }}
+                    />
+                  ) : (
+                    <RiEyeCloseFill
+                      onClick={() => setView(!view)}
+                      style={{
+                        position: "absolute",
+                        right: "12px",
+                        top: "35%",
+                        cursor: "pointer",
+                      }}
+                    />
+                  )}
+                </div>
               </div>
               <Button type="submit" className="w-full">
                 Login

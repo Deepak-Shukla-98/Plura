@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signUp } from "@/components/services/axios";
+import { RiEyeCloseFill, RiEyeOffLine } from "react-icons/ri";
 import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -28,6 +29,7 @@ interface data {
 }
 export default function LoginForm() {
   const router = useRouter();
+  const [view, setView] = useState(false);
   const [data, setData] = useState<data>({
     email: "",
     password: "",
@@ -100,16 +102,39 @@ export default function LoginForm() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  name="password"
-                  required
-                  onChange={(e) =>
-                    setData((o) => ({ ...o, password: e.target.value }))
-                  }
-                />
+                <div style={{ position: "relative" }}>
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    type={view ? "text" : "password"}
+                    name="password"
+                    required
+                    onChange={(e) =>
+                      setData((o) => ({ ...o, password: e.target.value }))
+                    }
+                  />
+                  {view ? (
+                    <RiEyeOffLine
+                      onClick={() => setView(!view)}
+                      style={{
+                        position: "absolute",
+                        right: "12px",
+                        top: "55%",
+                        cursor: "pointer",
+                      }}
+                    />
+                  ) : (
+                    <RiEyeCloseFill
+                      onClick={() => setView(!view)}
+                      style={{
+                        position: "absolute",
+                        right: "12px",
+                        top: "55%",
+                        cursor: "pointer",
+                      }}
+                    />
+                  )}
+                </div>
               </div>
               <Button type="submit" className="w-full">
                 Create an account

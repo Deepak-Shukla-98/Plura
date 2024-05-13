@@ -23,7 +23,7 @@ export default async function ServiceHandler(response: any) {
         if (!!spinner) {
           spinner.style.display = "none";
         }
-        toast.error(error);
+        toast.error(!!error ? error : "Error");
         return error;
       }
     );
