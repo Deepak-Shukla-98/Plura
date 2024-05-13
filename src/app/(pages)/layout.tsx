@@ -37,7 +37,7 @@ function HomeLayout({
             <div className="m-3 text-sm">
               <Breadcrumb />
             </div>
-            <div className="p-2">{children}</div>
+            <div className="p-0">{children}</div>
           </div>
         </Suspense>
       </div>
