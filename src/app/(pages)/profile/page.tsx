@@ -1,8 +1,58 @@
+"use client";
+import {
+  getProfile,
+  postProfile,
+  updateProfile,
+} from "@/components/services/axios";
+import { useEffect, useState } from "react";
 import { HiPhoto, HiMiniUserCircle } from "react-icons/hi2";
 
 export default function Example() {
+  const [data, setData] = useState({
+    id: "",
+    username: "",
+    first_name: "",
+    last_name: "",
+    dob: "",
+    gender: "",
+    bio: "",
+    profileImg: "",
+    address: {
+      street: "",
+      city: "",
+      state: "",
+      zip: "",
+    },
+    email: "",
+  });
+  const getData = async () => {
+    let res = await getProfile({});
+
+    setData(() => ({
+      ...res,
+      address: !!res.address
+        ? res.address
+        : {
+            street: "",
+            city: "",
+            state: "",
+            zip: "",
+          },
+    }));
+  };
+  const postData = async (e: any) => {
+    e.preventDefault();
+    if (!!data?.id) {
+      await updateProfile({ data });
+    } else {
+      await postProfile({ data });
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
-    <form className="px-5">
+    <form className="px-5" onSubmit={(e) => postData(e)}>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -31,8 +81,12 @@ export default function Example() {
                     name="username"
                     id="username"
                     autoComplete="username"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="block flex-1 border-0 bg-transparent p-2 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     placeholder="janesmith"
+                    value={data.username}
+                    onChange={(e) =>
+                      setData((o) => ({ ...o, username: e.target.value }))
+                    }
                   />
                 </div>
               </div>
@@ -51,7 +105,10 @@ export default function Example() {
                   name="about"
                   rows={3}
                   className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue={""}
+                  value={data.bio}
+                  onChange={(e) =>
+                    setData((o) => ({ ...o, bio: e.target.value }))
+                  }
                 />
               </div>
               <p className="mt-3 text-sm leading-6 text-gray-600">
@@ -73,7 +130,7 @@ export default function Example() {
                 />
                 <button
                   type="button"
-                  className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  className="rounded-md bg-white px-2.5 p-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 >
                   Change
                 </button>
@@ -139,7 +196,11 @@ export default function Example() {
                   name="first-name"
                   id="first-name"
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={data.first_name}
+                  onChange={(e) =>
+                    setData((o) => ({ ...o, first_name: e.target.value }))
+                  }
                 />
               </div>
             </div>
@@ -157,11 +218,35 @@ export default function Example() {
                   name="last-name"
                   id="last-name"
                   autoComplete="family-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={data.last_name}
+                  onChange={(e) =>
+                    setData((o) => ({ ...o, last_name: e.target.value }))
+                  }
                 />
               </div>
             </div>
-
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="last-name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                DOB
+              </label>
+              <div className="mt-2">
+                <input
+                  type="date"
+                  name="dob"
+                  id="dob"
+                  autoComplete="family-name"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={data.dob}
+                  onChange={(e) =>
+                    setData((o) => ({ ...o, dob: e.target.value }))
+                  }
+                />
+              </div>
+            </div>
             <div className="sm:col-span-4">
               <label
                 htmlFor="email"
@@ -175,7 +260,11 @@ export default function Example() {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={data.email}
+                  onChange={(e) =>
+                    setData((o) => ({ ...o, email: e.target.value }))
+                  }
                 />
               </div>
             </div>
@@ -185,18 +274,26 @@ export default function Example() {
                 htmlFor="country"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Country
+                State
               </label>
               <div className="mt-2">
                 <select
                   id="country"
                   name="country"
                   autoComplete="country-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  value={data.address.state}
+                  onChange={(e) =>
+                    setData((o) => ({
+                      ...o,
+                      address: { ...o.address, state: e.target.value },
+                    }))
+                  }
                 >
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>Mexico</option>
+                  <option>Delhi</option>
+                  <option>Mumbai</option>
+                  <option>Bangalore</option>
+                  <option>Hyderabad</option>
                 </select>
               </div>
             </div>
@@ -214,7 +311,14 @@ export default function Example() {
                   name="street-address"
                   id="street-address"
                   autoComplete="street-address"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={data.address.street}
+                  onChange={(e) =>
+                    setData((o) => ({
+                      ...o,
+                      address: { ...o.address, street: e.target.value },
+                    }))
+                  }
                 />
               </div>
             </div>
@@ -232,7 +336,14 @@ export default function Example() {
                   name="city"
                   id="city"
                   autoComplete="address-level2"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={data.address.city}
+                  onChange={(e) =>
+                    setData((o) => ({
+                      ...o,
+                      address: { ...o.address, city: e.target.value },
+                    }))
+                  }
                 />
               </div>
             </div>
@@ -242,7 +353,7 @@ export default function Example() {
                 htmlFor="region"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                State / Province
+                ZIP / Postal code
               </label>
               <div className="mt-2">
                 <input
@@ -250,32 +361,21 @@ export default function Example() {
                   name="region"
                   id="region"
                   autoComplete="address-level1"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="postal-code"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                ZIP / Postal code
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="postal-code"
-                  id="postal-code"
-                  autoComplete="postal-code"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={data.address.zip}
+                  onChange={(e) =>
+                    setData((o) => ({
+                      ...o,
+                      address: { ...o.address, zip: e.target.value },
+                    }))
+                  }
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-b border-gray-900/10 pb-12">
+        {/* <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
             Notifications
           </h2>
@@ -408,7 +508,7 @@ export default function Example() {
               </div>
             </fieldset>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">

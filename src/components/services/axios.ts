@@ -1,3 +1,4 @@
+"use client";
 import axios from "axios";
 import ServiceHandler from "./servicehandler";
 
@@ -7,25 +8,132 @@ export const signUp = async (payload: {}) => {
 export const signIn = async (payload: {}) => {
   return await ServiceHandler(axios.post(`/auth/signin`, payload));
 };
-export const home = async (payload: {}) => {
-  return await axios.get(`/home`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
-};
 export const getProfile = async (payload: {}) => {
-  return await axios.get(`/profile`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-    params: payload,
-  });
+  return await ServiceHandler(
+    axios.get(`/routes/profile/`, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      params: payload,
+    })
+  );
 };
-export const updateProfile = async (payload: { id: number; data: {} }) => {
-  return await axios.put(`/profile/${payload.id}`, payload.data, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
+export const postProfile = async (payload: { data: {} }) => {
+  return await ServiceHandler(
+    axios.post(`/routes/profile/`, payload.data, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+  );
+};
+export const updateProfile = async (payload: any) => {
+  return await ServiceHandler(
+    axios.put(`/routes/profile/`, payload.data, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      params: { id: payload.data.id },
+    })
+  );
+};
+export const getPosts = async (payload: {}) => {
+  return await ServiceHandler(
+    axios.get(`/routes/posts/`, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      params: payload,
+    })
+  );
+};
+export const postPosts = async (data: {}) => {
+  return await ServiceHandler(
+    axios.post(
+      `/routes/posts/`,
+      {
+        title: "new post",
+        body: data,
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    )
+  );
+};
+export const updatePosts = async (payload: { data: {} }) => {
+  return await ServiceHandler(
+    axios.put(`/routes/posts/`, payload.data, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      params: payload,
+    })
+  );
+};
+export const getComments = async (payload: {}) => {
+  return await ServiceHandler(
+    axios.get(`/routes/comments/`, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      params: payload,
+    })
+  );
+};
+export const postComments = async (comment: String, id: String) => {
+  return await ServiceHandler(
+    axios.post(
+      `/routes/comments/`,
+      { comment },
+      {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+        params: { id },
+      }
+    )
+  );
+};
+export const updateComments = async (payload: { data: {} }) => {
+  return await ServiceHandler(
+    axios.put(`/routes/comments/`, payload.data, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      params: payload,
+    })
+  );
+};
+export const getFollowers = async (payload: {}) => {
+  return await ServiceHandler(
+    axios.get(`/routes/following/`, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      params: payload,
+    })
+  );
+};
+export const addFollowers = async (payload: { data: {} }) => {
+  return await ServiceHandler(
+    axios.post(`/routes/following/`, payload.data, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      params: payload,
+    })
+  );
+};
+export const editFollowers = async (payload: { data: {} }) => {
+  return await ServiceHandler(
+    axios.put(`/routes/following/`, payload.data, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      params: payload,
+    })
+  );
 };

@@ -34,9 +34,7 @@ function HomeLayout({
         <Header />
         <Suspense fallback={<Loader display={"grid"} />}>
           <div style={{ maxHeight: "90vh", overflowY: "scroll" }}>
-            <div className="m-3 text-sm">
-              <Breadcrumb />
-            </div>
+            <div className="m-3 text-sm">{/* <Breadcrumb /> */}</div>
             <div className="p-0">{children}</div>
           </div>
         </Suspense>

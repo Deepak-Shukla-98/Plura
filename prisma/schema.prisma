@@ -27,7 +27,7 @@ model Profile {
   username      String      @unique
   first_name    String
   last_name     String
-  dob           DateTime?
+  dob           String?
   gender        String?
   bio           String?
   address       Address?
@@ -39,6 +39,7 @@ model Post {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
   title         String
   body          String
+  author_name   String
   author        User        @relation(fields: [authorId], references: [id])
   authorId      String      @db.ObjectId
   comments      Comment[]

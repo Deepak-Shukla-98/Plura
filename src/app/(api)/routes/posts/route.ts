@@ -54,9 +54,13 @@ export async function POST(request: NextRequest) {
       if (!title || !body) {
         throw new Error("Missing required fields");
       }
+      const { first_name, last_name } = (await prisma.user.findUnique({
+        where: { id },
+      })) as any;
       const input = {
         title,
         body,
+        author_name: `${first_name} ${last_name}`,
         author: {
           connect: { id },
         },

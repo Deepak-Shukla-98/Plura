@@ -74,7 +74,15 @@ export async function POST(request: NextRequest) {
         address,
       }: Profile = await request.json();
       if (!first_name || !last_name || !username || !dob) {
-        throw new Error("Missing required fields");
+        return new Response(
+          JSON.stringify({ error: "Missing required fields" }),
+          {
+            headers: {
+              "Content-type": "application/json",
+            },
+            status: 400,
+          }
+        );
       }
       const existingUser = await prisma.profile.findUnique({
         where: { username },

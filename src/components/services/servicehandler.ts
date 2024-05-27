@@ -12,6 +12,9 @@ export default async function ServiceHandler(response: any) {
       if (!!spinner) {
         spinner.style.display = "none";
       }
+      if (method !== "get") {
+        toast.success("Success");
+      }
       return data;
     })
     .catch(
@@ -23,8 +26,8 @@ export default async function ServiceHandler(response: any) {
         if (!!spinner) {
           spinner.style.display = "none";
         }
-        toast.error(!!error ? error : "Error");
-        return error;
+        toast.error(typeof error === "string" ? error : "Error");
+        return null;
       }
     );
 }
