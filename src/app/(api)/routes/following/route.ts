@@ -17,15 +17,12 @@ export async function GET(request: NextRequest) {
         where: { id },
       });
       if (!followingIDs) {
-        return new Response(
-          JSON.stringify({ error: "No one in following you" }),
-          {
-            headers: {
-              "Content-type": "application/json",
-            },
-            status: 404, // Not Found
-          }
-        );
+        return new Response(JSON.stringify({ error: "No followings" }), {
+          headers: {
+            "Content-type": "application/json",
+          },
+          status: 404, // Not Found
+        });
       }
       return new Response(JSON.stringify(followingIDs), {
         headers: {

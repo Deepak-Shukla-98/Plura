@@ -9,23 +9,66 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { getPosts, postComments, postPosts } from "@/components/services/axios";
-import { FaPaperPlane } from "react-icons/fa";
+import {
+  addFollowers,
+  getFollowers,
+  getFollowings,
+  getPosts,
+  getUsers,
+  getUsersById,
+  postComments,
+  postPosts,
+  updatePosts,
+} from "@/components/services/axios";
+import { FaPaperPlane, FaPlusCircle } from "react-icons/fa";
+import { PiCirclesThreePlusDuotone } from "react-icons/pi";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
+
+interface User {
+  bio: string;
+  first_name: string;
+  id: string;
+  last_name: string;
+  username: string;
+}
+interface Post {
+  id: "";
+  author_name: "";
+  body: "";
+  comments: [{ name: ""; comment: "" }];
+}
 
 export default function BaseUserFeedNested() {
   const [comment, setComment] = useState("");
   const [data, setData] = useState("");
-  const [posts, setPosts] = useState([
-    {
-      id: "",
-      author_name: "",
-      body: "",
-      comments: [{ name: "", comment: "" }],
-    },
-  ]);
+  const [edit, setEdit] = useState<string>("");
+  const [post, setPost] = useState<string>("");
+  const [users, setUsers] = useState<User[]>([]);
+  const [followers, setFollowers] = useState<User[]>([]);
+  const [followings, setFollowings] = useState<User[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const getData = async () => {
     let res = await getPosts({});
-    if (!!res) setPosts(res);
+    if (!!res) {
+      setPosts(res);
+    } else {
+      setPosts([]);
+    }
+  };
+  const fetchUsers = async () => {
+    let res = await getUsers({});
+    let follower = await getFollowers({});
+    let following = await getFollowings({});
+    let followers = await Promise.all(
+      follower.map(async (d: string) => await getUsersById(d))
+    );
+    let followings = await Promise.all(
+      following.map(async (d: string) => await getUsersById(d))
+    );
+    setUsers(res);
+    setFollowers(followers);
+    setFollowings(followings);
   };
   const handleComment = async (id: String) => {
     await postComments(comment, id);
@@ -37,8 +80,20 @@ export default function BaseUserFeedNested() {
     setData("");
     getData();
   };
+  const handleAdd = async (id: string) => {
+    await addFollowers({ following: id });
+    fetchUsers();
+  };
+  const handleEdit = async (id: string) => {
+    await updatePosts(id, post);
+    getData();
+    setEdit("");
+    setPost("");
+  };
+  console.log({ post });
   useEffect(() => {
     getData();
+    fetchUsers();
   }, []);
   return (
     <>
@@ -117,11 +172,68 @@ export default function BaseUserFeedNested() {
                           </span>
                         </span>
                         <span className="text-xs font-normal text-slate-400">
-                          {" "}
-                          3 hours ago
+                          <div className="group flex items-center gap-2 rtl:space-x-reverse">
+                            <button
+                              className="inline-flex h-0 w-0 translate-y-2 items-center justify-center gap-2 self-center justify-self-center overflow-hidden whitespace-nowrap rounded-full bg-emerald-50 px-6 text-sm font-medium tracking-wide text-emerald-500 opacity-0 transition duration-300 hover:bg-emerald-100 hover:text-emerald-600 focus:bg-emerald-200 focus:text-emerald-700 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-100 disabled:text-emerald-400 disabled:shadow-none group-hover:h-12 group-hover:w-12 group-hover:translate-y-0 group-hover:opacity-100"
+                              onClick={() => {
+                                setEdit(d.id);
+                                setPost(d.body);
+                              }}
+                            >
+                              <span className="relative only:-mx-6">
+                                <span className="sr-only">
+                                  Button description
+                                </span>
+                                <FiEdit size={20} />
+                              </span>
+                            </button>
+                            <button className="inline-flex h-0 w-0 translate-y-2 items-center justify-center gap-2 self-center justify-self-center overflow-hidden whitespace-nowrap rounded-full bg-emerald-50 px-6 text-sm font-medium tracking-wide text-emerald-500 opacity-0 transition delay-[0.05s] duration-300 hover:bg-emerald-100 hover:text-emerald-600 focus:bg-emerald-200 focus:text-emerald-700 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-100 disabled:text-emerald-400 disabled:shadow-none group-hover:h-12 group-hover:w-12 group-hover:translate-y-0 group-hover:opacity-100">
+                              <span className="relative only:-mx-6">
+                                <span className="sr-only">
+                                  Button description
+                                </span>
+                                <AiOutlineDelete size={20} />
+                              </span>
+                            </button>
+                            <div className="group relative z-50 inline-flex h-12 items-center justify-center gap-2 self-center whitespace-nowrap mx-3 cursor-pointer">
+                              <span className="relative transition duration-300 only:-mx-6 group-hover:rotate-45 hover:text-green-600">
+                                <span className="sr-only">
+                                  Button description
+                                </span>
+                                <PiCirclesThreePlusDuotone size={25} />
+                              </span>
+                            </div>
+                          </div>
                         </span>
                       </h4>
-                      <p className="text-sm text-slate-500">{d.body}</p>
+                      {edit === d.id ? (
+                        <div className="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring">
+                          <Label htmlFor="message" className="sr-only">
+                            Message
+                          </Label>
+                          <Textarea
+                            id="message"
+                            placeholder="Type your message here..."
+                            className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
+                            value={post}
+                            rows={4}
+                            onChange={(e) => setPost(e.target.value)}
+                          />
+                          <div className="absolute -bottom-2 -right-2 flex items-center p-3 pt-0">
+                            <Button
+                              type="button"
+                              size="sm"
+                              className="ml-auto gap-1.5"
+                              onClick={() => handleEdit(d.id)}
+                            >
+                              Submit
+                              <CornerDownLeft className="size-3.5" />
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="text-sm text-slate-500">{d.body}</p>
+                      )}
                     </div>
                     <ul
                       role="group"
@@ -203,7 +315,7 @@ export default function BaseUserFeedNested() {
                   </>
                 ))}
               </li>
-              <li role="article" className="relative pl-6 ">
+              {/* <li role="article" className="relative pl-6 ">
                 <div className="flex flex-col flex-1 gap-2">
                   <a
                     href="#"
@@ -232,198 +344,144 @@ export default function BaseUserFeedNested() {
                     </span>
                   </h4>
                 </div>
-              </li>
-              <li role="article" className="relative pl-6 ">
-                <div className="flex flex-col flex-1 gap-2">
-                  <a
-                    href="#"
-                    className="absolute z-10 inline-flex items-center justify-center w-6 h-6 text-white rounded-full -left-3 ring-2 ring-white"
-                  >
-                    <img
-                      src="https://i.pravatar.cc/48?img=13"
-                      alt="user name"
-                      title="user name"
-                      width="48"
-                      height="48"
-                      className="max-w-full rounded-full"
-                    />
-                  </a>
-                  <h4 className="flex flex-col items-start text-base font-medium leading-6 text-slate-700 md:flex-row lg:items-center">
-                    <span className="flex-1">
-                      Manos Gaitanakis
-                      <span className="text-sm font-normal text-slate-500">
-                        {" "}
-                        commented
-                      </span>
-                    </span>
-                    <span className="text-xs font-normal text-slate-400">
-                      {" "}
-                      3 hours ago
-                    </span>
-                  </h4>
-                  <p className="text-sm text-slate-500">
-                    Love it! I really like how the nested feeds are working as
-                    well. Is that going to be multi-nested? Or maybe stay in
-                    just one level. Also any ides on how I can remove the time
-                    stamp from the feeds?
-                  </p>
-                </div>
-              </li>
+              </li> */}
             </ul>
           </div>
           <div className="col-span-4">
-            <ul className="divide-y divide-slate-100">
-              <li className="flex items-center gap-4 px-4 py-3">
-                <div className="shrink-0 self-start">
-                  <a
-                    href="#"
-                    className="relative flex h-10 w-10 items-center justify-center rounded-full text-white"
-                  >
-                    <img
-                      src="https://i.pravatar.cc/40?img=1"
-                      alt="user name"
-                      title="user name"
-                      width="40"
-                      height="40"
-                      className="max-w-full rounded-full"
-                    />
-                    <span className=" absolute -bottom-0.5 -right-0.5 inline-flex items-center justify-center gap-1 rounded-full border-2 border-white bg-pink-500 p-1 text-sm text-white">
-                      <span className="sr-only"> offline </span>
-                    </span>
-                  </a>
-                </div>
-                <div className="flex min-h-[2rem] w-full min-w-0 flex-col items-start justify-center gap-0">
-                  <h4 className="w-full truncate text-base text-slate-700">
-                    Ellen Ripley
-                  </h4>
-                  <p className="w-full text-sm text-slate-500">
-                    A tough, resourceful space officer and survivor.
-                  </p>
-                </div>
+            {users.length ? (
+              <>
+                <h5 className="mt-2 px-2">Follow</h5>
+                <hr className="bg-gray-700 mt-2" />
+                <ul className="divide-y divide-slate-100">
+                  {users.map((d, i) => (
+                    <li className="flex items-center gap-4 px-4 py-3">
+                      <div className="shrink-0 self-start">
+                        <a
+                          href="#"
+                          className="relative flex h-10 w-10 items-center justify-center rounded-full text-white"
+                        >
+                          <img
+                            src={`https://i.pravatar.cc/40?img=${i + 1}`}
+                            alt="user name"
+                            title="user name"
+                            width="40"
+                            height="40"
+                            className="max-w-full rounded-full"
+                          />
+                          <span className=" absolute -bottom-0.5 -right-0.5 inline-flex items-center justify-center gap-1 rounded-full border-2 border-white bg-pink-500 p-1 text-sm text-white">
+                            <span className="sr-only"> offline </span>
+                          </span>
+                        </a>
+                      </div>
+                      <div className="flex min-h-[2rem] w-full min-w-0 flex-col items-start justify-center gap-0">
+                        <h4 className="w-full truncate text-base text-slate-700">
+                          {d.first_name} {d.last_name}
+                        </h4>
+                        <p className="w-full text-sm text-slate-500">{d.bio}</p>
+                      </div>
 
-                <span className="inline-flex items-center justify-center gap-1 rounded-full bg-pink-500 px-1.5 text-sm text-white">
-                  4<span className="sr-only"> new emails</span>
-                </span>
-              </li>
-              <li className="flex items-center gap-4 px-4 py-3">
-                <div className="shrink-0 self-start">
-                  <a
-                    href="#"
-                    className="relative flex h-10 w-10 items-center justify-center rounded-full text-white"
-                  >
-                    <img
-                      src="https://i.pravatar.cc/40?img=3"
-                      alt="user name"
-                      title="user name"
-                      width="40"
-                      height="40"
-                      className="max-w-full rounded-full"
-                    />
-                    <span className=" absolute -bottom-0.5 -right-0.5 inline-flex items-center justify-center gap-1 rounded-full border-2 border-white bg-emerald-500 p-1 text-sm text-white">
-                      <span className="sr-only"> online </span>
-                    </span>
-                  </a>
-                </div>
-                <div className="flex min-h-[2rem] w-full min-w-0 flex-col items-start justify-center gap-0">
-                  <h4 className="w-full truncate text-base text-slate-700">
-                    Thomas Anderson
-                  </h4>
-                  <p className="w-full text-sm text-slate-500">
-                    The chosen one, a hacker who can bend the rules.
-                  </p>
-                </div>
-                <span className="inline-flex items-center justify-center gap-1 rounded-full bg-pink-500 px-1.5 text-sm text-white">
-                  2<span className="sr-only"> new emails</span>
-                </span>
-              </li>
-              <li className="flex items-center gap-4 px-4 py-3">
-                <div className="shrink-0 self-start">
-                  <a
-                    href="#"
-                    className="relative flex h-10 w-10 items-center justify-center rounded-full text-white"
-                  >
-                    <img
-                      src="https://i.pravatar.cc/40?img=7"
-                      alt="user name"
-                      title="user name"
-                      width="40"
-                      height="40"
-                      className="max-w-full rounded-full"
-                    />
-                    <span className=" absolute -bottom-0.5 -right-0.5 inline-flex items-center justify-center gap-1 rounded-full border-2 border-white bg-emerald-500 p-1 text-sm text-white">
-                      <span className="sr-only"> online </span>
-                    </span>
-                  </a>
-                </div>
-                <div className="flex min-h-[2rem] w-full min-w-0 flex-col items-start justify-center gap-0">
-                  <h4 className="w-full truncate text-base text-slate-700">
-                    Luke Skywalker
-                  </h4>
-                  <p className="w-full text-sm text-slate-500">
-                    A Jedi warrior who fights against the dark side.
-                  </p>
-                </div>
-              </li>
-              <li className="flex items-center gap-4 px-4 py-3">
-                <div className="shrink-0 self-start">
-                  <a
-                    href="#"
-                    className="relative flex h-10 w-10 items-center justify-center rounded-full text-white"
-                  >
-                    <img
-                      src="https://i.pravatar.cc/40?img=5"
-                      alt="user name"
-                      title="user name"
-                      width="40"
-                      height="40"
-                      className="max-w-full rounded-full"
-                    />
-                    <span className=" absolute -bottom-0.5 -right-0.5 inline-flex items-center justify-center gap-1 rounded-full border-2 border-white bg-emerald-500 p-1 text-sm text-white">
-                      <span className="sr-only"> online </span>
-                    </span>
-                  </a>
-                </div>
-                <div className="flex min-h-[2rem] w-full min-w-0 flex-col items-start justify-center gap-0">
-                  <h4 className="w-full truncate text-base text-slate-700">
-                    Sarah Connor
-                  </h4>
-                  <p className="w-full text-sm text-slate-500">
-                    A fierce resistance leader who fights against machines.
-                  </p>
-                </div>
-                <span className="inline-flex items-center justify-center gap-1 rounded-full bg-pink-500 px-1.5 text-sm text-white">
-                  1<span className="sr-only"> new emails</span>
-                </span>
-              </li>
-              <li className="flex items-center gap-4 px-4 py-3">
-                <div className="shrink-0 self-start">
-                  <a
-                    href="#"
-                    className="relative flex h-10 w-10 items-center justify-center rounded-full text-white"
-                  >
-                    <img
-                      src="https://i.pravatar.cc/40?img=11"
-                      alt="user name"
-                      title="user name"
-                      width="40"
-                      height="40"
-                      className="max-w-full rounded-full"
-                    />
-                    <span className=" absolute -bottom-0.5 -right-0.5 inline-flex items-center justify-center gap-1 rounded-full border-2 border-white bg-pink-500 p-1 text-sm text-white">
-                      <span className="sr-only"> offline </span>
-                    </span>
-                  </a>
-                </div>
-                <div className="flex min-h-[2rem] w-full min-w-0 flex-col items-start justify-center gap-0">
-                  <h4 className="w-full truncate text-base text-slate-700">
-                    Captain James T. Kirk
-                  </h4>
-                  <p className="w-full text-sm text-slate-500">
-                    A charismatic and adventurous captain.
-                  </p>
-                </div>
-              </li>
-            </ul>
+                      <span className="inline-flex items-center justify-center gap-1">
+                        <button
+                          className="inline-flex mt-1 h-10 items-center justify-center gap-2 self-center justify-self-center whitespace-nowrap rounded-full bg-emerald-50 px-5 text-sm font-medium tracking-wide text-emerald-500 transition duration-300 hover:bg-emerald-100 hover:text-emerald-600 focus:bg-emerald-200 focus:text-emerald-700 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-100 disabled:text-emerald-400 disabled:shadow-none"
+                          type="button"
+                          onClick={() => handleAdd(d.id)}
+                        >
+                          <span className="relative only:-mx-5">
+                            <span className="sr-only">Add Comment</span>
+                            <FaPlusCircle size={18} />
+                          </span>
+                        </button>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
+
+            <>
+              <h5 className="mt-2 px-2">Followers</h5>
+              <hr className="bg-gray-700 mt-2" />
+              {followers.length ? (
+                <ul className="divide-y divide-slate-100">
+                  {followers.map((d, i) => (
+                    <li className="flex items-center gap-4 px-4 py-3">
+                      <div className="shrink-0 self-start">
+                        <a
+                          href="#"
+                          className="relative flex h-10 w-10 items-center justify-center rounded-full text-white"
+                        >
+                          <img
+                            src={`https://i.pravatar.cc/40?img=${i + 1}`}
+                            alt="user name"
+                            title="user name"
+                            width="40"
+                            height="40"
+                            className="max-w-full rounded-full"
+                          />
+                          <span className=" absolute -bottom-0.5 -right-0.5 inline-flex items-center justify-center gap-1 rounded-full border-2 border-white bg-pink-500 p-1 text-sm text-white">
+                            <span className="sr-only"> offline </span>
+                          </span>
+                        </a>
+                      </div>
+                      <div className="flex min-h-[2rem] w-full min-w-0 flex-col items-start justify-center gap-0">
+                        <h4 className="w-full truncate text-base text-slate-700">
+                          {d.first_name} {d.last_name}
+                        </h4>
+                        <p className="w-full text-sm text-slate-500">{d.bio}</p>
+                      </div>
+
+                      <span className="inline-flex items-center justify-center gap-1 rounded-full bg-pink-500 px-1.5 text-sm text-white">
+                        4<span className="sr-only"> new emails</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <small className="mt-3 p-6">No Followers</small>
+              )}
+            </>
+            <>
+              <h5 className="mt-2 px-2">Following</h5>
+              <hr className="bg-gray-700 mt-2" />
+              {followers.length ? (
+                <ul className="divide-y divide-slate-100">
+                  {followings.map((d, i) => (
+                    <li className="flex items-center gap-4 px-4 py-3">
+                      <div className="shrink-0 self-start">
+                        <a
+                          href="#"
+                          className="relative flex h-10 w-10 items-center justify-center rounded-full text-white"
+                        >
+                          <img
+                            src={`https://i.pravatar.cc/40?img=${i + 1}`}
+                            alt="user name"
+                            title="user name"
+                            width="40"
+                            height="40"
+                            className="max-w-full rounded-full"
+                          />
+                          <span className=" absolute -bottom-0.5 -right-0.5 inline-flex items-center justify-center gap-1 rounded-full border-2 border-white bg-pink-500 p-1 text-sm text-white">
+                            <span className="sr-only"> offline </span>
+                          </span>
+                        </a>
+                      </div>
+                      <div className="flex min-h-[2rem] w-full min-w-0 flex-col items-start justify-center gap-0">
+                        <h4 className="w-full truncate text-base text-slate-700">
+                          {d.first_name} {d.last_name}
+                        </h4>
+                        <p className="w-full text-sm text-slate-500">{d.bio}</p>
+                      </div>
+
+                      <span className="inline-flex items-center justify-center gap-1 rounded-full bg-pink-500 px-1.5 text-sm text-white">
+                        4<span className="sr-only"> new emails</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <small className="mt-3 p-6">No Followings</small>
+              )}
+            </>
           </div>
         </div>
       </div>

@@ -63,14 +63,19 @@ export const postPosts = async (data: {}) => {
     )
   );
 };
-export const updatePosts = async (payload: { data: {} }) => {
+export const updatePosts = async (id: string, post: string) => {
   return await ServiceHandler(
-    axios.put(`/routes/posts/`, payload.data, {
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-      params: payload,
-    })
+    axios.put(
+      `/routes/posts/`,
+      { body: post },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        params: { id },
+      }
+    )
   );
 };
 export const getComments = async (payload: {}) => {
@@ -107,7 +112,7 @@ export const updateComments = async (payload: { data: {} }) => {
     })
   );
 };
-export const getFollowers = async (payload: {}) => {
+export const getFollowings = async (payload: {}) => {
   return await ServiceHandler(
     axios.get(`/routes/following/`, {
       headers: {
@@ -117,9 +122,18 @@ export const getFollowers = async (payload: {}) => {
     })
   );
 };
-export const addFollowers = async (payload: { data: {} }) => {
+export const addFollowers = async (payload: {}) => {
   return await ServiceHandler(
-    axios.post(`/routes/following/`, payload.data, {
+    axios.put(`/routes/following/`, payload, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+  );
+};
+export const getUsers = async (payload: {}) => {
+  return await ServiceHandler(
+    axios.get(`/routes/users/`, {
       headers: {
         Authorization: localStorage.getItem("token"),
       },
@@ -127,13 +141,22 @@ export const addFollowers = async (payload: { data: {} }) => {
     })
   );
 };
-export const editFollowers = async (payload: { data: {} }) => {
+export const getFollowers = async (payload: {}) => {
   return await ServiceHandler(
-    axios.put(`/routes/following/`, payload.data, {
+    axios.get(`/routes/followers/`, {
       headers: {
         Authorization: localStorage.getItem("token"),
       },
       params: payload,
+    })
+  );
+};
+export const getUsersById = async (id: string) => {
+  return await ServiceHandler(
+    axios.get(`/routes/users/${id}`, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
     })
   );
 };

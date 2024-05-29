@@ -14,8 +14,19 @@ export async function GET(request: NextRequest) {
   try {
     const { id } = (await apiMiddleware(request)) as { id: string };
     if (!!id) {
-      const posts = await prisma.post.findMany({ include: { comments: true } });
-      if (!posts) {
+      const { followingIDs }: any = await prisma.user.findUnique({
+        where: { id },
+      });
+      const posts = await Promise.all(
+        [...followingIDs, id].flatMap(async (id: string) =>
+          prisma.post.findMany({
+            where: { authorId: id },
+            include: { comments: true },
+          })
+        )
+      );
+      let arr = posts.flat().sort((a, b) => a.id.localeCompare(b.id));
+      if (!arr.length) {
         return new Response(JSON.stringify({ error: "No Posts Found" }), {
           headers: {
             "Content-type": "application/json",
@@ -23,7 +34,7 @@ export async function GET(request: NextRequest) {
           status: 404, // Not Found
         });
       }
-      return new Response(JSON.stringify(posts), {
+      return new Response(JSON.stringify(arr), {
         headers: {
           "Content-type": "application/json",
         },
