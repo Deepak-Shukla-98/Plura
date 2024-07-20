@@ -1,447 +1,701 @@
-import React from "react";
+"use client";
+import "../../public/assets/css/theme.min.css";
 import Link from "next/link";
-import {
-  Activity,
-  ArrowUpRight,
-  CircleUser,
-  CreditCard,
-  DollarSign,
-  Menu,
-  Package2,
-  Search,
-  Users,
-} from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import React, { useState } from "react";
+import { IoCartSharp } from "react-icons/io5";
+import { TiUser } from "react-icons/ti";
 
 function Default() {
+  const [isToggleOpen, setIsToggleOpen] = useState(false);
   return (
-    <div className="flex min-h-screen w-full flex-col">
-      <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-          <Link
-            href="#"
-            className="flex items-center gap-2 text-lg font-semibold md:text-base"
+    <main className="main" id="top">
+      <nav
+        className="navbar navbar-expand-lg navbar-light fixed-top py-3 bg-light opacity-85"
+        data-navbar-on-scroll="data-navbar-on-scroll"
+      >
+        <div className="container">
+          <a className="navbar-brand" href="index.html">
+            <img
+              className="d-inline-block align-top img-fluid"
+              src="assets/img/gallery/logo-icon.png"
+              alt=""
+              width="50"
+            />
+            <span className="text-theme font-monospace fs-4 ps-2">Zou</span>
+          </a>
+          <button
+            className="navbar-toggler collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            onClick={() => setIsToggleOpen(!isToggleOpen)}
           >
-            <Package2 className="h-6 w-6" />
-            <span className="sr-only">Acme Inc</span>
-          </Link>
-          <Link
-            href="#"
-            className="text-foreground transition-colors hover:text-foreground"
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div
+            className={`${
+              isToggleOpen ? "collapse" : ""
+            } navbar-collapse border-top border-lg-0 mt-4 mt-lg-0`}
+            id="navbarSupportedContent"
           >
-            Dashboard
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Orders
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Products
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Customers
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Analytics
-          </Link>
-        </nav>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="shrink-0 md:hidden"
-            >
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left">
-            <nav className="grid gap-6 text-lg font-medium">
-              <Link
-                href="#"
-                className="flex items-center gap-2 text-lg font-semibold"
-              >
-                <Package2 className="h-6 w-6" />
-                <span className="sr-only">Acme Inc</span>
-              </Link>
-              <Link href="#" className="hover:text-foreground">
-                Dashboard
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Orders
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Products
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Customers
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Analytics
-              </Link>
-            </nav>
-          </SheetContent>
-        </Sheet>
-        <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <form className="ml-auto flex-1 sm:flex-initial">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search products..."
-                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item px-2">
+                <a
+                  className="nav-link fw-medium active"
+                  aria-current="page"
+                  href="#header"
+                >
+                  Home
+                </a>
+              </li>
+              <li className="nav-item px-2">
+                <a className="nav-link fw-medium" href="#Opportuanities">
+                  Shop
+                </a>
+              </li>
+              <li className="nav-item px-2">
+                <a className="nav-link fw-medium" href="#invest">
+                  About
+                </a>
+              </li>
+              <li className="nav-item px-2">
+                <a className="nav-link fw-medium" href="#contact">
+                  Contact{" "}
+                </a>
+              </li>
+            </ul>
+            <div className="d-flex">
+              <IoCartSharp
+                size={25}
+                color="grey"
+                className="mx-2 cursor-pointer"
               />
+              <Link href={"signin"}>
+                <TiUser size={25} color="grey" className="cursor-pointer" />
+              </Link>
             </div>
-          </form>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link href={"signin"}>Login</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          </div>
         </div>
-      </header>
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-          <Card x-chunk="dashboard-01-chunk-0">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Revenue
-              </CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">$45,231.89</div>
-              <p className="text-xs text-muted-foreground">
-                +20.1% from last month
+      </nav>
+      <section className="py-0" id="header">
+        <div
+          className="bg-holder d-none d-md-block"
+          style={{
+            backgroundImage: "url(assets/img/illustrations/hero-header.png)",
+            backgroundPosition: "right top",
+            backgroundSize: "contain",
+          }}
+        ></div>
+        <div
+          className="bg-holder d-md-none"
+          style={{
+            backgroundImage: "url(assets/img/illustrations/hero-bg.png)",
+            backgroundPosition: "right top",
+            backgroundSize: "contain",
+          }}
+        ></div>
+        <div className="container">
+          <div className="row align-items-center min-vh-75 min-vh-lg-100">
+            <div className="col-md-7 col-lg-6 col-xxl-5 py-6 text-sm-start text-center">
+              <h1 className="mt-6 mb-sm-4 fw-semi-bold lh-sm ">
+                Get Your Superfood Now
+              </h1>
+              <p className="mb-4 fs-1">
+                Enjoy the nutritious benefits of makhana with our easy online
+                ordering and subscription options.
               </p>
-            </CardContent>
-          </Card>
-          <Card x-chunk="dashboard-01-chunk-1">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Subscriptions
-              </CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+2350</div>
-              <p className="text-xs text-muted-foreground">
-                +180.1% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card x-chunk="dashboard-01-chunk-2">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Sales</CardTitle>
-              <CreditCard className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+12,234</div>
-              <p className="text-xs text-muted-foreground">
-                +19% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card x-chunk="dashboard-01-chunk-3">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Now</CardTitle>
-              <Activity className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+573</div>
-              <p className="text-xs text-muted-foreground">
-                +201 since last hour
-              </p>
-            </CardContent>
-          </Card>
+              <a className="btn btn-lg btn-success" href="#" role="button">
+                Order Now
+              </a>
+            </div>
+          </div>
         </div>
-        <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-          <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4">
-            <CardHeader className="flex flex-row items-center">
-              <div className="grid gap-2">
-                <CardTitle>Transactions</CardTitle>
-                <CardDescription>
-                  Recent transactions from your store.
-                </CardDescription>
-              </div>
-              <Button asChild size="sm" className="ml-auto gap-1">
-                <Link href="#">
-                  View All
-                  <ArrowUpRight className="h-4 w-4" />
-                </Link>
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Customer</TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Type
-                    </TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Status
-                    </TableHead>
-                    <TableHead className="hidden xl:table-column">
-                      Date
-                    </TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Liam Johnson</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        liam@example.com
+      </section>
+      <section className="py-5" id="Opportuanities">
+        <div
+          className="bg-holder d-none d-sm-block"
+          style={{
+            backgroundImage: "url(assets/img/illustrations/bg.png)",
+            backgroundPosition: "top left",
+            backgroundSize: "225px 755px",
+            marginTop: "-17.5rem",
+          }}
+        ></div>
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-9 mx-auto text-center mb-3">
+              <h5 className="fw-bold fs-3 fs-lg-5 lh-sm mb-3">
+                Why Choose Zou Makhana?
+              </h5>
+              <p className="mb-5">
+                Zou offers premium quality makhana, sourced from the finest
+                lotus seeds and roasted to perfection. Our makhana is not only a
+                delicious snack but also packed with nutrients like protein and
+                minerals, making it a healthier choice for your snacking needs.
+              </p>
+            </div>
+          </div>
+          <div className="row flex-center h-100">
+            <div className="col-xl-9">
+              <div className="row">
+                <div className="col-md-4 mb-5">
+                  <div className="card h-100 shadow px-4 px-md-2 px-lg-3 card-span pt-6">
+                    <div className="text-center text-md-start card-hover">
+                      <img
+                        className="ps-3 icons"
+                        src="assets/img/icons/farmer.svg"
+                        height="60"
+                        alt=""
+                      />
+                      <div className="card-body">
+                        <h6 className="fw-bold fs-1 heading-color">
+                          Discover the Source of Makhana
+                        </h6>
+                        <p className="mt-3 mb-md-0 mb-lg-2">
+                          Experience the purity straight from our dedicated
+                          farmers. Our makhana is sustainably sourced, ensuring
+                          you get the best, natural taste and nutrition.
+                        </p>
                       </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-23
-                    </TableCell>
-                    <TableCell className="text-right">$250.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Olivia Smith</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        olivia@example.com
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-4 mb-5">
+                  <div className="card h-100 shadow px-4 px-md-2 px-lg-3 card-span pt-6">
+                    <div className="text-center text-md-start card-hover">
+                      <img
+                        className="ps-3 icons"
+                        src="assets/img/icons/growth.svg"
+                        height="60"
+                        alt=""
+                      />
+                      <div className="card-body">
+                        <h6 className="fw-bold fs-1 heading-color">
+                          Nutrient-Rich Superfood
+                        </h6>
+                        <p className="mt-3 mb-md-0 mb-lg-2">
+                          Rich in protein, fiber, and essential minerals,
+                          supports weight management, heart health, and overall
+                          wellness, making it a perfect snack.
+                        </p>
                       </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Refund
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Declined
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-24
-                    </TableCell>
-                    <TableCell className="text-right">$150.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Noah Williams</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        noah@example.com
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-4 mb-5">
+                  <div className="card h-100 shadow px-4 px-md-2 px-lg-3 card-span pt-6">
+                    <div className="text-center text-md-start card-hover">
+                      <img
+                        className="ps-3 icons"
+                        src="assets/img/icons/planting.svg"
+                        height="60"
+                        alt=""
+                      />
+                      <div className="card-body">
+                        <h6 className="fw-bold fs-1 heading-color">
+                          Health Benefits of Makhana
+                        </h6>
+                        <p className="mt-3 mb-md-0 mb-lg-2">
+                          Invest in your health with makhana. Enjoy the numerous
+                          health advantages that come with every handful of
+                          makhana.
+                        </p>
                       </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Subscription
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-25
-                    </TableCell>
-                    <TableCell className="text-right">$350.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Emma Brown</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        emma@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-26
-                    </TableCell>
-                    <TableCell className="text-right">$450.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Liam Johnson</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        liam@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-27
-                    </TableCell>
-                    <TableCell className="text-right">$550.00</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-          <Card x-chunk="dashboard-01-chunk-5">
-            <CardHeader>
-              <CardTitle>Recent Sales</CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-8">
-              <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Olivia Martin
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    olivia.martin@email.com
-                  </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="ml-auto font-medium">+$1,999.00</div>
               </div>
-              <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/02.png" alt="Avatar" />
-                  <AvatarFallback>JL</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Jackson Lee
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    jackson.lee@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$39.00</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/03.png" alt="Avatar" />
-                  <AvatarFallback>IN</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Isabella Nguyen
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    isabella.nguyen@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$299.00</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/04.png" alt="Avatar" />
-                  <AvatarFallback>WK</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    William Kim
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    will@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$99.00</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/05.png" alt="Avatar" />
-                  <AvatarFallback>SD</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Sofia Davis
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    sofia.davis@email.com
-                  </p>
-                </div>
-                <div className="ml-auto font-medium">+$39.00</div>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+      <section className="py-5" id="invest">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-9 mb-3">
+              <div className="row">
+                <div className="col-lg-9 mb-3">
+                  <h5 className="fw-bold fs-3 fs-lg-5 lh-sm mb-3">
+                    Shop at Your Convenience
+                  </h5>
+                  <p className="mb-5">
+                    Experience the ease of ordering premium quality makhana,
+                    tailored to your needs, directly from our dedicated farms.
+                  </p>
+                </div>
+                <div className="col-md-6 mb-5">
+                  <div className="card text-white">
+                    <img
+                      className="card-img"
+                      src="assets/img/gallery/short-terms.png"
+                      alt="..."
+                    />
+                    <div className="card-img-overlay d-flex flex-column justify-content-center px-5 px-md-3 px-lg-5 bg-dark-gradient">
+                      <h6 className="text-success pt-2">Check Our Products</h6>
+                      <hr
+                        className="text-white"
+                        style={{ height: "0.12rem", width: "2.813rem" }}
+                      />
+                      <div className="pt-lg-3">
+                        <h6 className="fw-bold text-white fs-1 fs-md-2 fs-lg-3 w-xxl-50">
+                          Quick Makhana Delivery
+                        </h6>
+                        <p className="w-xxl-75">
+                          Perfect for those who want to quickly replenish their
+                          stock with high-quality, nutrient-rich makhana.
+                        </p>
+                        <button
+                          className="btn btn-lg btn-light text-success"
+                          type="button"
+                        >
+                          Browse Products
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 mb-5">
+                  <div className="card text-white">
+                    <img
+                      className="card-img"
+                      src="assets/img/gallery/fully-funded.png"
+                      alt="..."
+                    />
+                    <div className="card-img-overlay d-flex flex-column justify-content-center px-5 px-md-3 px-lg-5 bg-light-gradient">
+                      <h6 className="text-success pt-2">Long-Term Supply</h6>
+                      <hr
+                        className="text-white"
+                        style={{ height: "0.12rem", width: "2.813rem" }}
+                      />
+                      <div className="pt-lg-3">
+                        <h6 className="fw-bold text-white fs-1 fs-md-2 fs-lg-3 w-xxl-50">
+                          Regular Makhana Shipments
+                        </h6>
+                        <p className="w-xxl-75">
+                          Subscribe to our long-term supply plan to receive
+                          regular shipments of premium makhana.
+                        </p>
+                        <button
+                          className="btn btn-lg btn-light text-success"
+                          type="button"
+                        >
+                          Subscribe Today
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="py-0" id="testimonial">
+        <div className="container-lg">
+          <div className="row flex-center">
+            <div className="col-12 col-lg-10 col-xl-12">
+              <div
+                className="bg-holder"
+                style={{
+                  backgroundImage:
+                    "url(assets/img/illustrations/testimonial-bg.png)",
+                  backgroundPosition: "top left",
+                  backgroundSize: "120px 83px",
+                }}
+              ></div>
+              <h6 className="fs-3 fs-lg-4 fw-bold lh-sm">
+                What Our Customers Are <br />
+                are saying about Zou
+              </h6>
+            </div>
+            <div
+              className="carousel slide pt-3"
+              id="carouselExampleDark"
+              data-bs-ride="carousel"
+            >
+              <div className="carousel-inner">
+                <div className="carousel-item active" data-bs-interval="10000">
+                  <div className="row h-100 mx-3 mx-sm-5 mx-md-4 my-md-7 m-lg-7 mt-7">
+                    <div className="col-md-4 mb-5 mb-md-0">
+                      <div className="card h-100 shadow">
+                        <div className="card-body my-3">
+                          <div className="align-items-xl-center d-block d-xl-flex px-3">
+                            <img
+                              className="img-fluid me-3 me-md-2 me-lg-3"
+                              src="assets/img/gallery/user-1.png"
+                              width="50"
+                              alt=""
+                            />
+                            <div className="flex-1 align-items-center pt-2">
+                              <h5 className="mb-0 fw-bold text-success">
+                                Sarah Johnson
+                              </h5>
+                              <p className="fw-normal text-black">
+                                Nutritionist
+                              </p>
+                            </div>
+                          </div>
+                          <p className="mb-0 px-3 px-md-2 px-xxl-3">
+                            "I've incorporated makhana into my clients' diets,
+                            and the results have been phenomenal. The quality is
+                            top-notch, and the nutritional benefits are evident
+                            in improved energy and overall health."
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-4 mb-5 mb-md-0">
+                      <div className="card h-100 shadow">
+                        <div className="card-body my-3">
+                          <div className="align-items-xl-center d-block d-xl-flex px-3">
+                            <img
+                              className="img-fluid me-3 me-md-2 me-lg-3"
+                              src="assets/img/gallery/user-2.png"
+                              width="50"
+                              alt=""
+                            />
+                            <div className="flex-1 align-items-center pt-2">
+                              <h5 className="mb-0 fw-bold text-success">
+                                Michael Lee
+                              </h5>
+                              <p className="fw-normal text-black">
+                                Fitness Trainer
+                              </p>
+                            </div>
+                          </div>
+                          <p className="mb-0 px-3 px-md-2 px-xxl-3">
+                            "Makhana has become a staple in my meal plans for
+                            clients. It's a great source of protein and fiber,
+                            perfect for anyone looking to maintain a healthy
+                            lifestyle. The convenience of regular deliveries is
+                            a huge plus!"
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-4 mb-5 mb-md-0">
+                      <div className="card h-100 shadow">
+                        <div className="card-body my-3">
+                          <div className="align-items-xl-center d-block d-xl-flex px-3">
+                            <img
+                              className="img-fluid me-3 me-md-2 me-lg-3"
+                              src="assets/img/gallery/user-3.png"
+                              width="50"
+                              alt=""
+                            />
+                            <div className="flex-1 align-items-center pt-2">
+                              <h5 className="mb-0 fw-bold text-success">
+                                Emily Davis
+                              </h5>
+                              <p className="fw-normal text-black">
+                                Health Blogger
+                              </p>
+                            </div>
+                          </div>
+                          <p className="mb-0 px-3 px-md-2 px-xxl-3">
+                            "I'm always on the lookout for healthy snacks, and
+                            makhana is a winner. It's delicious, nutritious, and
+                            versatile. I've recommended it to all my followers,
+                            and they love it just as much as I do."
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="carousel-item" data-bs-interval="2000">
+                  <div className="row h-100 mx-3 mx-sm-5 mx-md-4 my-md-7 m-lg-7 mt-7">
+                    <div className="col-md-4 mb-5 mb-md-0">
+                      <div className="card h-100 shadow">
+                        <div className="card-body my-3">
+                          <div className="align-items-xl-center d-block d-xl-flex px-3">
+                            <img
+                              className="img-fluid me-3 me-md-2 me-lg-3"
+                              src="assets/img/gallery/user-1.png"
+                              width="50"
+                              alt=""
+                            />
+                            <div className="flex-1 align-items-center pt-2">
+                              <h5 className="mb-0 fw-bold text-success">
+                                Fernando Soler
+                              </h5>
+                              <p className="fw-normal text-black">
+                                Telecommunication Engineer
+                              </p>
+                            </div>
+                          </div>
+                          <p className="mb-0 px-3 px-md-2 px-xxl-3">
+                            &quot;Quis autem vel eum iure reprehenderit qui in
+                            ea voluptate velit esse quam nihil molestiae
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-4 mb-5 mb-md-0">
+                      <div className="card h-100 shadow">
+                        <div className="card-body my-3">
+                          <div className="align-items-xl-center d-block d-xl-flex px-3">
+                            <img
+                              className="img-fluid me-3 me-md-2 me-lg-3"
+                              src="assets/img/gallery/user-2.png"
+                              width="50"
+                              alt=""
+                            />
+                            <div className="flex-1 align-items-center pt-2">
+                              <h5 className="mb-0 fw-bold text-success">
+                                Ilone Pickford
+                              </h5>
+                              <p className="fw-normal text-black">
+                                Head of Agrogofund Groups{" "}
+                              </p>
+                            </div>
+                          </div>
+                          <p className="mb-0 px-3 px-md-2 px-xxl-3">
+                            &quot;At vero eos et accusamus et iusto odio
+                            dignissimos ducimus qui blanditiis praesentium{" "}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-4 mb-5 mb-md-0">
+                      <div className="card h-100 shadow">
+                        <div className="card-body my-3">
+                          <div className="align-items-xl-center d-block d-xl-flex px-3">
+                            <img
+                              className="img-fluid me-3 me-md-2 me-lg-3"
+                              src="assets/img/gallery/user-3.png"
+                              width="50"
+                              alt=""
+                            />
+                            <div className="flex-1 align-items-center pt-2">
+                              <h5 className="mb-0 fw-bold text-success">
+                                Ed O’Brien
+                              </h5>
+                              <p className="fw-normal text-black">Herbalist</p>
+                            </div>
+                          </div>
+                          <p className="mb-0 px-3 px-md-2 px-xxl-3">
+                            &quot;Ui dolorem eum fugiat quo voluptas nulla
+                            pariatur? At vero eos et accusamus et iusto odio
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="carousel-item">
+                  <div className="row h-100 mx-3 mx-sm-5 mx-md-4 my-md-7 m-lg-7 mt-7">
+                    <div className="col-md-4 mb-5 mb-md-0">
+                      <div className="card h-100 shadow">
+                        <div className="card-body my-3">
+                          <div className="align-items-xl-center d-block d-xl-flex px-3">
+                            <img
+                              className="img-fluid me-3 me-md-2 me-lg-3"
+                              src="assets/img/gallery/user-1.png"
+                              width="50"
+                              alt=""
+                            />
+                            <div className="flex-1 align-items-center pt-2">
+                              <h5 className="mb-0 fw-bold text-success">
+                                Fernando Soler
+                              </h5>
+                              <p className="fw-normal text-black">
+                                Telecommunication Engineer
+                              </p>
+                            </div>
+                          </div>
+                          <p className="mb-0 px-3 px-md-2 px-xxl-3">
+                            &quot;Quis autem vel eum iure reprehenderit qui in
+                            ea voluptate velit esse quam nihil molestiae
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-4 mb-5 mb-md-0">
+                      <div className="card h-100 shadow">
+                        <div className="card-body my-3">
+                          <div className="align-items-xl-center d-block d-xl-flex px-3">
+                            <img
+                              className="img-fluid me-3 me-md-2 me-lg-3"
+                              src="assets/img/gallery/user-2.png"
+                              width="50"
+                              alt=""
+                            />
+                            <div className="flex-1 align-items-center pt-2">
+                              <h5 className="mb-0 fw-bold text-success">
+                                Ilone Pickford
+                              </h5>
+                              <p className="fw-normal text-black">
+                                Head of Agrogofund Groups{" "}
+                              </p>
+                            </div>
+                          </div>
+                          <p className="mb-0 px-3 px-md-2 px-xxl-3">
+                            &quot;At vero eos et accusamus et iusto odio
+                            dignissimos ducimus qui blanditiis praesentium{" "}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-4 mb-5 mb-md-0">
+                      <div className="card h-100 shadow">
+                        <div className="card-body my-3">
+                          <div className="align-items-xl-center d-block d-xl-flex px-3">
+                            <img
+                              className="img-fluid me-3 me-md-2 me-lg-3"
+                              src="assets/img/gallery/user-3.png"
+                              width="50"
+                              alt=""
+                            />
+                            <div className="flex-1 align-items-center pt-2">
+                              <h5 className="mb-0 fw-bold text-success">
+                                Ed O’Brien
+                              </h5>
+                              <p className="fw-normal text-black">Herbalist</p>
+                            </div>
+                          </div>
+                          <p className="mb-0 px-3 px-md-2 px-xxl-3">
+                            &quot;Ui dolorem eum fugiat quo voluptas nulla
+                            pariatur? At vero eos et accusamus et iusto odio
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row px-3 px-sm-6 px-md-0 px-lg-5 px-xl-4">
+                <div className="col-12 position-relative">
+                  <a
+                    className="carousel-control-prev carousel-icon z-index-2"
+                    href="#carouselExampleDark"
+                    role="button"
+                    data-bs-slide="prev"
+                  >
+                    <span
+                      className="carousel-control-prev-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span className="visually-hidden">Previous</span>
+                  </a>
+                  <a
+                    className="carousel-control-next carousel-icon z-index-2"
+                    href="#carouselExampleDark"
+                    role="button"
+                    data-bs-slide="next"
+                  >
+                    <span
+                      className="carousel-control-next-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span className="visually-hidden">Next</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="py-0" id="contact">
+        <div
+          className="bg-holder"
+          style={{
+            backgroundImage: "url(assets/img/illustrations/footer-bg.png)",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+          }}
+        ></div>
+        <div className="container">
+          <div
+            className="row justify-content-lg-between"
+            style={{ paddingTop: "2rem" }}
+          >
+            <div className="col-6 col-sm-4 col-lg-auto mb-3">
+              <h6 className="mb-3 text-1000 fw-semi-bold">COMPANY </h6>
+              <ul className="list-unstyled mb-md-4 mb-lg-0">
+                <li className="mb-3">
+                  <a className="text-700 text-decoration-none" href="#!">
+                    About Us
+                  </a>
+                </li>
+                <li className="mb-3">
+                  <a className="text-700 text-decoration-none" href="#!">
+                    Team
+                  </a>
+                </li>
+                {/* <li className="mb-3">
+                  <a className="text-700 text-decoration-none" href="#!">
+                    Careers
+                  </a>
+                </li> */}
+                <li className="mb-3">
+                  <a className="text-700 text-decoration-none" href="#!">
+                    Contact
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="col-6 col-sm-4 col-lg-auto mb-3">
+              <h6 className="mb-3 text-1000 fw-semi-bold">INVEST </h6>
+              <ul className="list-unstyled mb-md-4 mb-lg-0">
+                <li className="mb-3">
+                  <a className="text-700 text-decoration-none" href="#!">
+                    Features
+                  </a>
+                </li>
+                <li className="mb-3">
+                  <a className="text-700 text-decoration-none" href="#!">
+                    How it works
+                  </a>
+                </li>
+                <li className="mb-3">
+                  <a className="text-700 text-decoration-none" href="#!">
+                    Pricing
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="col-6 col-sm-4 col-lg-auto mb-3">
+              <h6 className="mb-3 text-1000 fw-semi-bold">LEGAL </h6>
+              <ul className="list-unstyled mb-md-4 mb-lg-0">
+                <li className="mb-3">
+                  <a className="text-700 text-decoration-none" href="#!">
+                    Privacy
+                  </a>
+                </li>
+                <li className="mb-3">
+                  <a className="text-700 text-decoration-none" href="#!">
+                    Terms
+                  </a>
+                </li>
+                <li className="mb-3">
+                  <a className="text-700 text-decoration-none" href="#!">
+                    Security
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="col-12 col-lg-auto mb-3">
+              <div className="card bg-success">
+                <div className="card-body p-sm-4">
+                  <h5 className="text-white">Blog Zou</h5>
+                  <p className="mb-0 text-white fs--1 fs-sm-1">
+                    write email to us info@zoufarm.com
+                  </p>
+                  <button className="btn btn-light text-success" type="button">
+                    Sing In
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr className="text-300 mb-0" />
+        </div>
+      </section>
+    </main>
   );
 }
 export default Default;
